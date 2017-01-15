@@ -23,16 +23,34 @@ for file in $DIR/*; do
 	EXT="mkv"
 	if [ "${file}" != "${file%.${EXT}}" ]; then
 		ffmpeg -i "$file" -vn -acodec $OUTPUT_FORMAT "${file/.$EXT/.$OUTPUT_FORMAT}";
-		rm $file
 	fi
 	EXT="mp4"
 	if [ "${file}" != "${file%.${EXT}}" ]; then
 		ffmpeg -i "$file" -vn -acodec $OUTPUT_FORMAT "${file/.$EXT/.$OUTPUT_FORMAT}";
-		rm $file
 	fi
 	EXT="webm"
 	if [ "${file}" != "${file%.${EXT}}" ]; then
 		ffmpeg -i "$file" -vn -acodec $OUTPUT_FORMAT "${file/.$EXT/.$OUTPUT_FORMAT}";
-		rm $file
 	fi
 done
+
+# Delete all video files
+read -p "Are you sure you want to delete all video files in $DIR (y/n)? " -n 1 -r
+echo 
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+	echo -n "Deleting all MKV files... "
+	EXT="mkv"
+	rm $DIR/*.$EXT 
+	echo "OK"
+
+	echo -n "Deleting all MP4 files... "
+	EXT="mp4"
+	rm $DIR/*.$EXT 
+	echo "OK"
+
+	echo -n "Deleting all WEBM files... "
+	EXT="webm"
+	rm $DIR/*.$EXT 
+	echo "OK"
+fi
